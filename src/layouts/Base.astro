@@ -1,9 +1,10 @@
 ---
 interface Props {
   title?: string;
+  currentPage?: string;
 }
 
-const { title = "LexBlog Library" } = Astro.props;
+const { title = "LexBlog Library", currentPage = "" } = Astro.props;
 ---
 
 <html lang="en">
@@ -17,29 +18,57 @@ const { title = "LexBlog Library" } = Astro.props;
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <title>{title}</title>
   </head>
-  <body class="font-sans bg-white text-primary min-h-screen flex flex-col">
-    <header class="bg-[#0a0a0b] text-white">
-      <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/" class="text-lg font-bold tracking-tight">LexBlog Library</a>
-        <div class="flex items-center gap-6 text-sm">
-          <a href="/about" class="hover:text-gray-300 transition-colors">About</a>
-          <a href="/submit" class="hover:text-gray-300 transition-colors">Submit Your Publishing</a>
-          <a href="/author-record" class="hover:text-gray-300 transition-colors">Author Record</a>
-        </div>
+  <body class="font-sans bg-white text-primary min-h-screen">
+    <header class="bg-[#0a0a0b] text-white w-full">
+      {/* Primary nav */}
+      <div class="max-w-[1240px] mx-auto px-8 h-[74px] flex items-center gap-8">
+        <a href="/" class="flex items-baseline gap-[11px] no-underline whitespace-nowrap">
+          <span class="font-[800] text-[27px] tracking-tight text-white leading-none">LexBlog</span>
+          <span class="font-normal text-[20px] tracking-tight text-white/[0.58] leading-none">Library</span>
+        </a>
+        <nav class="flex items-center gap-[30px] ml-auto whitespace-nowrap">
+          <a
+            href="/about"
+            class:list={[
+              "no-underline text-[15px] cursor-pointer transition-colors hover:text-white",
+              currentPage === "about" ? "font-semibold text-white border-b-2 border-white pb-[3px]" : "font-medium text-white/[0.82]"
+            ]}
+          >About</a>
+          <a
+            href="/submit"
+            class:list={[
+              "no-underline text-[15px] cursor-pointer transition-colors hover:text-white",
+              currentPage === "submit" || currentPage === "thank-you" ? "font-semibold text-white border-b-2 border-white pb-[3px]" : "font-medium text-white/[0.82]"
+            ]}
+          >Submit your publishing</a>
+          <a
+            href="/author-record"
+            class:list={[
+              "no-underline text-[15px] cursor-pointer transition-colors hover:text-white",
+              currentPage === "author-record" ? "font-semibold text-white border-b-2 border-white pb-[3px]" : "font-medium text-white/[0.82]"
+            ]}
+          >Author Record</a>
+        </nav>
+      </div>
+
+      {/* Divider */}
+      <div class="h-px bg-white/10"></div>
+
+      {/* Secondary nav */}
+      <nav class="max-w-[1240px] mx-auto px-8 h-12 flex items-stretch gap-[34px]">
+        <a
+          href="/"
+          class="flex items-center no-underline text-[14.5px] font-semibold tracking-tight text-white border-b-2 border-white -mb-px"
+        >Library</a>
+        <a
+          href="https://www.lexblog.com"
+          class="flex items-center no-underline text-[14.5px] font-medium tracking-tight text-white/[0.72] border-b-2 border-transparent hover:text-white transition-colors"
+        >Publishing Platform</a>
       </nav>
     </header>
 
-    <main class="flex-1">
+    <main>
       <slot />
     </main>
-
-    <footer class="bg-[#0a0a0b] text-white text-sm">
-      <div class="max-w-7xl mx-auto px-6 py-8 flex items-center justify-between">
-        <p class="text-gray-400">&copy; {new Date().getFullYear()} LexBlog, Inc.</p>
-        <div class="flex items-center gap-6 text-gray-400">
-          <a href="https://www.lexblog.com" class="hover:text-white transition-colors">LexBlog.com</a>
-        </div>
-      </div>
-    </footer>
   </body>
 </html>
