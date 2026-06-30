@@ -1,10 +1,17 @@
 ---
+import SEO from "../components/SEO.astro";
+
 interface Props {
   title?: string;
+  description?: string;
   currentPage?: string;
 }
 
-const { title = "LexBlog Library", currentPage = "" } = Astro.props;
+const {
+  title = "LexBlog Library",
+  description = "Preserving and structuring the insight of legal professionals as citable secondary law.",
+  currentPage = "",
+} = Astro.props;
 ---
 
 <html lang="en">
@@ -14,6 +21,7 @@ const { title = "LexBlog Library", currentPage = "" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <SEO title={title} description={description} />
   </head>
   <body class="font-sans bg-white text-primary min-h-screen flex flex-col">
     <header data-site-header class="bg-[#0a0a0b] text-white w-full relative z-[1000]">

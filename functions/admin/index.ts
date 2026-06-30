@@ -1,3 +1,5 @@
+import { shell, esc } from '../lib/layout';
+
 interface Env {
   SUBMISSIONS: KVNamespace;
 }
@@ -17,10 +19,10 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   if (id) {
     const value = await env.SUBMISSIONS.get(id);
     if (!value) {
-      return html('<h2>Submission not found</h2><p><a href="/admin">Back to list</a></p>');
+      return shell('Submission Not Found', '<div class="wrap"><h2>Submission not found</h2><p><a href="/admin">Back to list</a></p></div>');
     }
     const submission = JSON.parse(value);
-    return html(renderDetail(submission));
+    return shell('Submission Detail – Admin', `<div class="wrap">${renderDetail(submission)}</div>`);
   }
 
   // List all submissions
@@ -33,47 +35,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     return bDate.localeCompare(aDate);
   });
 
-  return html(renderList(entries));
+  return shell('Submissions – Admin', `<div class="wrap">${renderList(entries)}</div>`);
 };
-
-function html(body: string): Response {
-  return new Response(
-    `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submissions – LexBlog Library Admin</title>
-<style>
-  * { box-sizing: border-box; }
-  body { margin: 0; padding: 24px; font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #111; background: #f9f9f9; }
-  .wrap { max-width: 960px; margin: 0 auto; }
-  h1 { font-size: 22px; margin: 0 0 24px; }
-  h2 { font-size: 18px; margin: 0 0 16px; }
-  table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
-  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #eee; }
-  th { background: #f5f5f5; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #666; }
-  tr:hover td { background: #fafafa; }
-  a { color: #0a5fcf; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 3px; }
-  .badge-single { background: #e8f6ed; color: #1f8a3b; }
-  .badge-feed { background: #e8f0fc; color: #2563eb; }
-  .empty { padding: 40px; text-align: center; color: #888; }
-  .detail { background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 24px; }
-  .field { margin-bottom: 16px; }
-  .field-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: #888; margin-bottom: 4px; }
-  .field-value { font-size: 14px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
-  .back { display: inline-block; margin-bottom: 16px; font-size: 13px; }
-</style>
-</head>
-<body>
-<div class="wrap">${body}</div>
-</body>
-</html>`,
-    { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-  );
-}
 
 function renderList(entries: KVNamespacedListKey<SubmissionMeta>[]): string {
   if (entries.length === 0) {
@@ -90,7 +53,7 @@ function renderList(entries: KVNamespacedListKey<SubmissionMeta>[]): string {
 
     return `<tr>
       <td><a href="/admin?id=${encodeURIComponent(entry.name)}">${date}</a></td>
-      <td>${escapeHtml(meta.email || '—')}</td>
+      <td>${esc(meta.email || '—')}</td>
       <td><span class="badge ${badgeClass}">${type}</span></td>
     </tr>`;
   }).join('');
@@ -120,16 +83,12 @@ function renderDetail(s: Record<string, unknown>): string {
   const html = fields
     .filter(([, val]) => val)
     .map(([label, val]) =>
-      `<div class="field"><div class="field-label">${label}</div><div class="field-value">${escapeHtml(String(val))}</div></div>`
+      `<div class="field"><div class="field-label">${label}</div><div class="field-value">${esc(String(val))}</div></div>`
     ).join('');
 
   return `<a class="back" href="/admin">&larr; All submissions</a>
 <h2>Submission Detail</h2>
 <div class="detail">${html}</div>`;
-}
-
-function escapeHtml(str: string): string {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 interface KVNamespacedListKey<T> {

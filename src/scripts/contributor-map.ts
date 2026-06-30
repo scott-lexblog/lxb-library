@@ -42,6 +42,8 @@ function initContributorMap() {
     center: [32, -18],
     zoom: 2,
     minZoom: 2,
+    maxBounds: [[-75, -Infinity], [85, Infinity]],
+    maxBoundsViscosity: 1.0,
     worldCopyJump: true,
     scrollWheelZoom: true,
   });
