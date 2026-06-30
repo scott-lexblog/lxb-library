@@ -9,8 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.0.3",
     "@tailwindcss/vite": "^4.1.12",
+    "astro": "^7.0.3",
     "tailwindcss": "^4.1.12"
+  },
+  "devDependencies": {
+    "@fontsource/archivo": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8"
   }
 }

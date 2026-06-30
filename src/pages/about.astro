@@ -4,7 +4,81 @@ import "../styles/global.css";
 ---
 
 <Base title="About – LexBlog Library" currentPage="about">
-  <div class="max-w-[1240px] mx-auto px-8 py-24">
-    <p>about</p>
+  <div class="max-w-[1240px] mx-auto px-5 md:px-8 pt-9 pb-24">
+    {/* Breadcrumb */}
+    <div class="flex items-center gap-2 text-[12px] leading-5 mb-7">
+      <a href="/" class="text-neutral-400 no-underline">LexBlog</a>
+      <span class="text-stone-300">/</span>
+      <a href="/" class="text-neutral-400 no-underline">Library</a>
+      <span class="text-stone-300">/</span>
+      <span class="text-zinc-900 font-medium">About</span>
+    </div>
+
+    {/* Hero */}
+    <div class="max-w-[860px]">
+      <h1 class="text-[32px] md:text-[48px] font-[800] leading-[1] text-neutral-950">About The Library at LexBlog</h1>
+      <div class="pt-6 flex flex-col gap-3.5">
+        <p class="text-zinc-700 text-lg md:text-xl leading-8 m-0">No one preserves the published insight of legal professionals, nor structures it for citation as secondary law.</p>
+        <p class="text-neutral-950 text-lg md:text-xl font-medium leading-8 m-0">The Library at LexBlog will.</p>
+      </div>
+    </div>
+
+    {/* Sections */}
+    <div class="max-w-[900px] pt-14 flex flex-col gap-12">
+
+      <section>
+        <h2 class="text-neutral-950 text-2xl font-bold leading-10 m-0">1. Why the Library Exists</h2>
+        <div class="pt-5 flex flex-col gap-4">
+          <p class="text-neutral-700 text-lg leading-8 m-0">Legal professionals have been publishing insight and commentary online for more than twenty years. Much of it is not being kept. When authors leave firms, websites are rebuilt, publishing is purged for SEO reasons, or URLs change, that expertise is often lost with it.</p>
+          <p class="text-neutral-700 text-lg leading-8 m-0">Traditional legal publishing is preserved and cited. The working insight of legal professionals, commentary explaining how the law actually operates, often is not. Every major category of legal knowledge has citation infrastructure except practitioner commentary.</p>
+          <p class="text-neutral-700 text-lg leading-8 m-0">AI systems will increasingly interpret primary law. Without the insight and commentary of legal professionals, that interpretation risks lacking the practical authority and context through which the law actually operates.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-neutral-950 text-2xl font-bold leading-10 m-0">2. What the Library Does</h2>
+        <div class="pt-5 flex flex-col gap-4">
+          <p class="text-neutral-700 text-lg leading-8 m-0">The Library at LexBlog preserves and structures legal professional publishing as citable secondary law. Using AI-assisted tools, we help capture, organize, and structure legal professional publishing for legal research and citation.</p>
+          <p class="text-neutral-700 text-lg leading-8 m-0">Publishing may come from LexBlog-hosted publications or from elsewhere on the web, with attribution and links back to the original source.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-neutral-950 text-2xl font-bold leading-10 m-0">3. Author Records</h2>
+        <div class="pt-5 flex flex-col gap-4">
+          <p class="text-neutral-700 text-lg leading-8 m-0">The Library organizes publishing around verified Author Records designed to connect legal professionals with their complete body of published work.</p>
+          <p class="text-neutral-700 text-lg leading-8 m-0">Each Author Record is modeled after the Library of Congress Name Authority Record and contains ten fields: photo, authorized name, firm or organization, practice areas, jurisdictions, law school, bar admissions, professional bio, Author Record ID, and a structured link to the author's complete body of published work in the Library.</p>
+          <p class="text-neutral-700 text-lg leading-8 m-0">The Author Record and accompanying publishing are designed to provide durable attribution, professional context, and durable signals of authority for legal professionals, researchers, legal research platforms, and eventually AI systems.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-neutral-950 text-2xl font-bold leading-10 m-0">4. Research Platform Partners</h2>
+        <div class="pt-5 flex flex-col gap-4">
+          <p class="text-neutral-700 text-lg leading-8 m-0">Legal professional-authored publishing in the Library is being structured and delivered for retrieval, discovery, and citation across leading legal research platforms.</p>
+          <p class="text-neutral-700 text-lg leading-8 m-0">Early publishing and research partners receiving Library feeds include HeinOnline and Clio/vLex.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-neutral-950 text-2xl font-bold leading-10 m-0">5. Why It Matters</h2>
+        <div class="pt-5 flex flex-col gap-4">
+          <p class="text-neutral-700 text-lg leading-8 m-0">The law does not live only in cases and statutes. It also lives in the daily insight, analysis, explanation, and experience shared by legal professionals. The bankruptcy lawyer writing about the realities of her district. The employment lawyer explaining changes in state law as they happen. The trial lawyer documenting practical strategy developed over decades.</p>
+          <p class="text-neutral-700 text-lg leading-8 m-0">Too often, that work disappears.</p>
+          <p class="text-neutral-700 text-lg leading-8 m-0">The Library at LexBlog exists so legal professional-authored insight becomes part of the enduring legal record, not lost history.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-neutral-950 text-2xl font-bold leading-10 m-0">6. Submit Your Publishing</h2>
+        <div class="pt-5 flex flex-col gap-4">
+          <p class="text-neutral-700 text-lg leading-8 m-0">The Library welcomes blogs, articles, alerts, white papers, publications, and blog feeds from legal professionals and organizations advancing the understanding of the law, whether hosted on LexBlog or elsewhere on the web.</p>
+          <div>
+            <a href="/submit" class="inline-flex items-center px-6 py-3.5 bg-neutral-950 rounded-sm text-white text-base font-semibold leading-7 no-underline hover:bg-neutral-800 transition-colors">Submit your publishing here</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
   </div>
 </Base>
