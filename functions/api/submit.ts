@@ -32,22 +32,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
   }
 
-  const turnstileResult = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      secret: env.TURNSTILE_SECRET_KEY,
-      response: token,
-      remoteip: request.headers.get('CF-Connecting-IP') || '',
-    }),
-  });
-
-  const turnstile: TurnstileResponse = await turnstileResult.json();
-  if (!turnstile.success) {
-    return new Response(JSON.stringify({ error: 'Captcha verification failed' }), {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
+  // Skip Turnstile verification in local dev (no secret key available)
+  if (env.TURNSTILE_SECRET_KEY) {
+    const turnstileResult = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        secret: env.TURNSTILE_SECRET_KEY,
+        response: token,
+        remoteip: request.headers.get('CF-Connecting-IP') || '',
+      }),
     });
+
+    const turnstile: TurnstileResponse = await turnstileResult.json();
+    if (!turnstile.success) {
+      return new Response(JSON.stringify({ error: 'Captcha verification failed' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
   }
 
   // Build submission record
