@@ -1,13 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
 import "../styles/global.css";
+
+const stats = [
+  { value: 237,     raw: 237,    full: "Contributors Mapped", short: "Contributors" },
+  { value: "471,319", raw: 471319, full: "Works Represented",   short: "Works" },
+  { value: 396,     raw: 396,    full: "Contribution Places",  short: "Places" },
+  { value: 35,      raw: 35,     full: "Countries",            short: "Countries" },
+];
+const fmt = (n: number | string) => typeof n === "string" ? n : n.toLocaleString("en-US");
 ---
 
 <Base title="LexBlog Library" description="Preserving and structuring the insight of legal professionals as citable secondary law. Explore contributors, works, and places across 35 countries." currentPage="home">
   <div class="max-w-[1240px] mx-auto px-5 md:px-8 py-6 pb-20">
     {/* Breadcrumb */}
     <div class="flex items-center gap-[9px] text-[12.5px] text-[#8a8d93] mb-4">
-      <a href="/" class="text-[#8a8d93] no-underline">LexBlog</a>
+      <a href="https://www.lexblog.com" class="text-[#8a8d93] no-underline">LexBlog</a>
       <span class="text-[#c4c6cb]">/</span>
       <span class="text-[#16181c] font-medium">Library</span>
     </div>
@@ -25,11 +33,10 @@ import "../styles/global.css";
       <div data-contributor-map class="cm-root">
         <div class="cm-shell">
           <div data-map-canvas class="cm-map" aria-label="Contribution map"></div>
-          <div class="cm-metrics" aria-label="Map metrics">
-            <div class="metric"><b>237</b><span><em class="full">Contributors Mapped</em><em class="short">Contributors</em></span></div>
-            <div class="metric"><b>471,319</b><span><em class="full">Works Represented</em><em class="short">Works</em></span></div>
-            <div class="metric"><b>396</b><span><em class="full">Contribution Places</em><em class="short">Places</em></span></div>
-            <div class="metric"><b>35</b><span><em class="full">Countries</em><em class="short">Countries</em></span></div>
+          <div data-stats-grid class="cm-metrics" aria-label="Map metrics">
+            {stats.map(s => (
+              <div class="metric"><b data-count-to={s.raw}>{fmt(s.value)}</b><span><em class="full">{s.full}</em><em class="short">{s.short}</em></span></div>
+            ))}
           </div>
           <aside class="cm-panel" aria-label="Contributor details">
             <div class="ph">
@@ -49,23 +56,13 @@ import "../styles/global.css";
     </div>
 
     {/* Stats grid */}
-    <div data-stats-grid class="mt-7 grid grid-cols-2 md:grid-cols-4 gap-px bg-[#e7e8ea] border border-[#e7e8ea] rounded-[4px] overflow-hidden">
-      <div class="bg-white p-[22px_24px]">
-        <div data-count-to="237" class="text-[28px] md:text-[34px] font-[800] tracking-[-0.02em] text-[#0a0a0b] leading-none">237</div>
-        <div class="mt-[9px] font-mono text-[11px] tracking-[0.07em] text-[#8a8d93] uppercase">Contributors Mapped</div>
-      </div>
-      <div class="bg-white p-[22px_24px]">
-        <div data-count-to="471319" class="text-[28px] md:text-[34px] font-[800] tracking-[-0.02em] text-[#0a0a0b] leading-none">471,319</div>
-        <div class="mt-[9px] font-mono text-[11px] tracking-[0.07em] text-[#8a8d93] uppercase">Works Represented</div>
-      </div>
-      <div class="bg-white p-[22px_24px]">
-        <div data-count-to="396" class="text-[28px] md:text-[34px] font-[800] tracking-[-0.02em] text-[#0a0a0b] leading-none">396</div>
-        <div class="mt-[9px] font-mono text-[11px] tracking-[0.07em] text-[#8a8d93] uppercase">Contribution Places</div>
-      </div>
-      <div class="bg-white p-[22px_24px]">
-        <div data-count-to="35" class="text-[28px] md:text-[34px] font-[800] tracking-[-0.02em] text-[#0a0a0b] leading-none">35</div>
-        <div class="mt-[9px] font-mono text-[11px] tracking-[0.07em] text-[#8a8d93] uppercase">Countries</div>
-      </div>
+    <div class="mt-7 grid grid-cols-2 md:grid-cols-4 gap-px bg-[#e7e8ea] border border-[#e7e8ea] rounded-[4px] overflow-hidden">
+      {stats.map(s => (
+        <div class="bg-white p-[22px_24px]">
+          <div class="text-[28px] md:text-[34px] font-[800] tracking-[-0.02em] text-[#0a0a0b] leading-none">{fmt(s.value)}</div>
+          <div class="mt-[9px] font-mono text-[11px] tracking-[0.07em] text-[#8a8d93] uppercase">{s.full}</div>
+        </div>
+      ))}
     </div>
   </div>
 
