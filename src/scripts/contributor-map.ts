@@ -67,16 +67,16 @@ function initContributorMap() {
       if (seen.has(item.organization)) return;
       seen.add(item.organization);
       const d = document.createElement('div');
-      d.className = 'row';
+      d.className = 'py-[11px] px-4 border-b border-[#dedede] text-[11.5px] leading-[1.5]';
       const archive = item.archive_url
-        ? '<a href="' + item.archive_url + '" target="_blank" rel="noopener">LexBlog archive</a>'
+        ? '<a href="' + item.archive_url + '" target="_blank" rel="noopener" class="text-[#111] no-underline border-b border-[#dedede]">LexBlog archive</a>'
         : '';
       const domain = item.domain
-        ? '<a href="https://' + item.domain + '" target="_blank" rel="noopener">' + item.domain + '</a>'
+        ? '<a href="https://' + item.domain + '" target="_blank" rel="noopener" class="text-[#111] no-underline border-b border-[#dedede]">' + item.domain + '</a>'
         : '';
       d.innerHTML =
-        '<div class="f">' + item.organization + '</div>' +
-        '<div class="m">' + fmt(item.works) + ' works preserved · ' +
+        '<div class="font-bold leading-[1.35]">' + item.organization + '</div>' +
+        '<div class="mt-[5px] text-[#5f5f5f] text-[10.5px]">' + fmt(item.works) + ' works preserved · ' +
         [item.label, domain, archive].filter(Boolean).join(' · ') + '</div>';
       pb.appendChild(d);
     });

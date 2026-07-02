@@ -30,20 +30,23 @@ const fmt = (n: number | string) => typeof n === "string" ? n : n.toLocaleString
 
     {/* Map card */}
     <div class="mt-[34px] border border-[#e7e8ea] rounded-[4px] bg-[#f7f6f2] overflow-hidden">
-      <div data-contributor-map class="cm-root">
-        <div class="cm-shell">
-          <div data-map-canvas class="cm-map" aria-label="Contribution map"></div>
-          <div data-stats-grid class="cm-metrics" aria-label="Map metrics">
+      <div data-contributor-map class="h-auto md:h-[620px] font-mono text-[#111]">
+        <div class="w-full h-full relative grid grid-cols-1 grid-rows-[420px_auto] md:grid-cols-[minmax(0,1fr)_280px] md:grid-rows-none">
+          <div data-map-canvas class="min-w-0 h-[420px] md:h-full bg-[#f4f4f1]" aria-label="Contribution map"></div>
+          <div data-stats-grid class="absolute z-[500] left-[58px] top-[14px] hidden lg:flex flex-wrap border border-[#111] bg-white/[0.93] max-w-[calc(100%-360px)]" aria-label="Map metrics">
             {stats.map(s => (
-              <div class="metric"><b data-count-to={s.raw}>{fmt(s.value)}</b><span><em class="full">{s.full}</em><em class="short">{s.short}</em></span></div>
+              <div class="p-[8px_10px] border-r border-[#111] last:border-r-0 min-w-[86px]">
+                <b data-count-to={s.raw} class="block text-[16px] leading-none">{fmt(s.value)}</b>
+                <span class="block mt-[5px] text-[#5f5f5f] text-[8.5px] tracking-[0.1em] uppercase">{s.full}</span>
+              </div>
             ))}
           </div>
-          <aside class="cm-panel" aria-label="Contributor details">
-            <div class="ph">
-              <h2 data-panel-title>Contribution Map</h2>
-              <div class="s" data-panel-subtitle>Circle size reflects preserved works from matched contributors, not office density.</div>
+          <aside class="h-auto max-h-[300px] md:h-full md:max-h-none border-t md:border-t-0 md:border-l border-[#111] bg-white flex flex-col" aria-label="Contributor details">
+            <div class="p-[14px_16px_13px] border-b border-[#111]">
+              <h2 data-panel-title class="m-0 text-[15px] leading-[1.25]">Contribution Map</h2>
+              <div data-panel-subtitle class="mt-[7px] text-[#5f5f5f] text-[11px] leading-[1.45]">Circle size reflects preserved works from matched contributors, not office density.</div>
             </div>
-            <div class="pb" data-panel-body></div>
+            <div data-panel-body class="overflow-y-auto flex-1"></div>
           </aside>
         </div>
       </div>
@@ -69,71 +72,12 @@ const fmt = (n: number | string) => typeof n === "string" ? n : n.toLocaleString
   {/* Leaflet — self-hosted */}
   <link rel="stylesheet" href="/js/lib/leaflet.css" />
 
-  {/* Map styles */}
+  {/* Leaflet overrides — can't be done with TW */}
   <style is:global>
-    .cm-root {
-      --ink: #111;
-      --muted: #5f5f5f;
-      --rule: #111;
-      --hair: #dedede;
-      height: 620px;
-      font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
-      color: var(--ink);
-    }
-    .cm-root .cm-shell {
-      width: 100%; height: 100%; position: relative;
-      display: grid; grid-template-columns: minmax(0, 1fr) 280px;
-    }
-    .cm-root .cm-map { min-width: 0; height: 100%; background: #f4f4f1; }
-    .cm-root .cm-panel {
-      height: 100%; border-left: 1px solid var(--rule); background: #fff;
-      display: flex; flex-direction: column;
-    }
-    .cm-root .cm-metrics {
-      position: absolute; z-index: 500; left: 58px; top: 14px;
-      display: flex; flex-wrap: wrap;
-      border: 1px solid var(--rule); background: rgba(255,255,255,.93);
-      max-width: calc(100% - 360px);
-    }
-    .cm-root .metric {
-      padding: 8px 10px; border-right: 1px solid var(--rule); min-width: 86px;
-    }
-    .cm-root .metric:last-child { border-right: none; }
-    .cm-root .metric b { display: block; font-size: 16px; line-height: 1; }
-    .cm-root .metric span {
-      display: block; margin-top: 5px; color: var(--muted);
-      font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase;
-    }
-    .cm-root .metric em { font-style: normal; }
-    .cm-root .metric .short { display: none; }
-    .cm-root .ph { padding: 14px 16px 13px; border-bottom: 1px solid var(--rule); }
-    .cm-root .ph h2 { margin: 0; font-size: 15px; line-height: 1.25; }
-    .cm-root .ph .s { margin-top: 7px; color: var(--muted); font-size: 11px; line-height: 1.45; }
-    .cm-root .pb { overflow-y: auto; flex: 1; }
-    .cm-root .row { padding: 11px 16px; border-bottom: 1px solid var(--hair); font-size: 11.5px; line-height: 1.5; }
-    .cm-root .row .f { font-weight: 700; line-height: 1.35; }
-    .cm-root .row .m { margin-top: 5px; color: var(--muted); font-size: 10.5px; }
-    .cm-root .row a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--hair); }
-    .cm-root .leaflet-container { font-family: inherit; }
-    .cm-root .leaflet-control-attribution { font-size: 9px; }
-    .cm-root .leaflet-popup-content-wrapper,
-    .cm-root .leaflet-popup-tip { border-radius: 0; }
-
-    @media (max-width: 760px) {
-      .cm-root { height: auto; }
-      .cm-root .cm-shell {
-        grid-template-columns: 1fr;
-        grid-template-rows: 420px auto;
-      }
-      .cm-root .cm-map { height: 420px; }
-      .cm-root .cm-panel {
-        height: auto; max-height: 300px;
-        border-left: 0; border-top: 1px solid var(--rule);
-      }
-      .cm-root .cm-metrics { left: 10px; max-width: calc(100% - 20px); }
-      .cm-root .metric .full { display: none; }
-      .cm-root .metric .short { display: inline; }
-    }
+    [data-contributor-map] .leaflet-container { font-family: inherit; }
+    [data-contributor-map] .leaflet-control-attribution { font-size: 9px; }
+    [data-contributor-map] .leaflet-popup-content-wrapper,
+    [data-contributor-map] .leaflet-popup-tip { border-radius: 0; }
   </style>
 
   <script is:inline src="/js/lib/leaflet.js"></script>
