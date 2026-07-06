@@ -34,7 +34,8 @@ function initContributorMap() {
     maxZoom: 19,
   }).addTo(map);
 
-  fetch('/markers.json')
+  const version = root.dataset.version || '';
+  fetch(`/markers.json?v=${version}`)
     .then(res => res.json())
     .then((markers: MarkerData[]) => {
       markers.forEach(m => {

@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import "../styles/global.css";
+import { VERSION } from "../lib/version";
 
 const stats = [
   { value: "73,000",    raw: 73000,   label: "Contributing Authors" },
@@ -28,7 +29,7 @@ const stats = [
 
     {/* Map card */}
     <div class="mt-[34px] border border-[#e7e8ea] rounded-[4px] bg-[#f7f6f2] overflow-hidden">
-      <div data-contributor-map class="h-[320px] md:h-[480px]">
+      <div data-contributor-map data-version={VERSION} class="h-[320px] md:h-[480px]">
         <div data-map-canvas class="w-full h-full bg-[#f4f4f1]" aria-label="Contribution map"></div>
       </div>
     </div>
@@ -50,7 +51,7 @@ const stats = [
   </div>
 
   {/* Leaflet — self-hosted */}
-  <link rel="stylesheet" href="/js/lib/leaflet.css" />
+  <link rel="stylesheet" href={`/js/lib/leaflet.css?v=${VERSION}`} />
 
   {/* Leaflet overrides */}
   <style is:global>
@@ -58,7 +59,7 @@ const stats = [
     [data-contributor-map] .leaflet-control-attribution { font-size: 9px; }
   </style>
 
-  <script is:inline src="/js/lib/leaflet.js"></script>
+  <script is:inline src={`/js/lib/leaflet.js?v=${VERSION}`}></script>
   <script src="../scripts/contributor-map.ts"></script>
   <script src="../scripts/count-up.ts"></script>
 </Base>

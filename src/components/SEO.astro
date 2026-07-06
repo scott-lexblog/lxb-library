@@ -1,4 +1,6 @@
 ---
+import { VERSION } from "../lib/version";
+
 interface Props {
   title: string;
   description: string;
@@ -6,7 +8,7 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, "https://library.lexblog.com");
-const image = new URL("/social-share.png", "https://library.lexblog.com").toString();
+const image = new URL(`/social-share.png?v=${VERSION}`, "https://library.lexblog.com").toString();
 const siteName = "LexBlog Library";
 ---
 
