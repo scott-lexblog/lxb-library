@@ -3,15 +3,13 @@ import Base from "../layouts/Base.astro";
 import "../styles/global.css";
 
 const stats = [
-  { value: 237,     raw: 237,    full: "Contributors Mapped", short: "Contributors" },
-  { value: "471,319", raw: 471319, full: "Works Represented",   short: "Works" },
-  { value: 396,     raw: 396,    full: "Contribution Places",  short: "Places" },
-  { value: 35,      raw: 35,     full: "Countries",            short: "Countries" },
+  { value: "73,000",    raw: 73000,   label: "Contributing Authors" },
+  { value: "1,100,000", raw: 1100000, label: "Published Works" },
+  { value: "4,400",     raw: 4400,    label: "Publications" },
 ];
-const fmt = (n: number | string) => typeof n === "string" ? n : n.toLocaleString("en-US");
 ---
 
-<Base title="LexBlog Library" description="Preserving and structuring the insight of legal professionals as citable secondary law. Explore contributors, works, and places across 35 countries." currentPage="home">
+<Base title="The Library at LexBlog" description="Preserving and structuring the insight of legal professionals as citable secondary law." currentPage="home">
   <div class="max-w-[1240px] mx-auto px-5 md:px-8 py-6 pb-20">
     {/* Breadcrumb */}
     <div class="flex items-center gap-[9px] text-[12.5px] text-[#8a8d93] mb-4">
@@ -22,7 +20,7 @@ const fmt = (n: number | string) => typeof n === "string" ? n : n.toLocaleString
 
     {/* Title */}
     <div class="pb-[18px] border-b-2 border-[#16181c]">
-      <h1 class="m-0 text-[32px] md:text-[46px] font-[800] tracking-[-0.03em] leading-none text-[#0a0a0b]">Library</h1>
+      <h1 class="m-0 text-[32px] md:text-[46px] font-[800] tracking-[-0.03em] leading-none text-[#0a0a0b]">The Library at LexBlog</h1>
       <div class="mt-[13px] font-mono text-[12.5px] leading-[1.55] tracking-[0.04em] text-[#8a8d93] uppercase">
         Preserving and structuring the insight of legal professionals as citable secondary law
       </div>
@@ -30,40 +28,22 @@ const fmt = (n: number | string) => typeof n === "string" ? n : n.toLocaleString
 
     {/* Map card */}
     <div class="mt-[34px] border border-[#e7e8ea] rounded-[4px] bg-[#f7f6f2] overflow-hidden">
-      <div data-contributor-map class="h-auto md:h-[620px] font-mono text-[#111]">
-        <div class="w-full h-full relative grid grid-cols-1 grid-rows-[420px_auto] md:grid-cols-[minmax(0,1fr)_280px] md:grid-rows-none">
-          <div data-map-canvas class="min-w-0 h-[420px] md:h-full bg-[#f4f4f1]" aria-label="Contribution map"></div>
-          <div data-stats-grid class="absolute z-[500] left-[58px] top-[14px] hidden lg:flex flex-wrap border border-[#111] bg-white/[0.93] max-w-[calc(100%-360px)]" aria-label="Map metrics">
-            {stats.map(s => (
-              <div class="p-[8px_10px] border-r border-[#111] last:border-r-0 min-w-[86px]">
-                <b data-count-to={s.raw} class="block text-[16px] leading-none">{fmt(s.value)}</b>
-                <span class="block mt-[5px] text-[#5f5f5f] text-[8.5px] tracking-[0.1em] uppercase">{s.full}</span>
-              </div>
-            ))}
-          </div>
-          <aside class="h-auto max-h-[300px] md:h-full md:max-h-none border-t md:border-t-0 md:border-l border-[#111] bg-white flex flex-col" aria-label="Contributor details">
-            <div class="p-[14px_16px_13px] border-b border-[#111]">
-              <h2 data-panel-title class="m-0 text-[15px] leading-[1.25]">Contribution Map</h2>
-              <div data-panel-subtitle class="mt-[7px] text-[#5f5f5f] text-[11px] leading-[1.45]">Circle size reflects preserved works from matched contributors, not office density.</div>
-            </div>
-            <div data-panel-body class="overflow-y-auto flex-1"></div>
-          </aside>
-        </div>
+      <div data-contributor-map class="h-[320px] md:h-[480px]">
+        <div data-map-canvas class="w-full h-full bg-[#f4f4f1]" aria-label="Contribution map"></div>
       </div>
     </div>
 
     {/* Caption */}
-    <div class="mt-[13px] flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 font-mono text-[12.5px] leading-[1.55] tracking-[0.04em] text-[#8a8d93] uppercase">
-      <span>Each dot represents a region where legal professionals are actively publishing preserved works.</span>
-      <a href="/markers.json" class="text-[#8a8d93] no-underline whitespace-nowrap hover:text-[#0a0a0b] transition-colors">Contributors Feed &middot; JSON</a>
+    <div class="mt-[13px] font-mono text-[12.5px] leading-[1.55] tracking-[0.04em] text-[#8a8d93] uppercase">
+      Each dot represents a contributing publisher. Placement is illustrative, not a precise location.
     </div>
 
     {/* Stats grid */}
-    <div class="mt-7 grid grid-cols-2 md:grid-cols-4 gap-px bg-[#e7e8ea] border border-[#e7e8ea] rounded-[4px] overflow-hidden">
+    <div data-stats-grid class="mt-7 grid grid-cols-1 md:grid-cols-3 gap-px bg-[#e7e8ea] border border-[#e7e8ea] rounded-[4px] overflow-hidden">
       {stats.map(s => (
-        <div class="bg-white p-[22px_24px]">
-          <div class="text-[28px] md:text-[34px] font-[800] tracking-[-0.02em] text-[#0a0a0b] leading-none">{fmt(s.value)}</div>
-          <div class="mt-[9px] font-mono text-[11px] tracking-[0.07em] text-[#8a8d93] uppercase">{s.full}</div>
+        <div class="bg-white p-[24px_28px]">
+          <div data-count-to={s.raw} class="text-[28px] md:text-[42px] font-[800] tracking-[-0.02em] text-[#0a0a0b] leading-none">{s.value}</div>
+          <div class="mt-[10px] font-mono text-[11px] tracking-[0.07em] text-[#8a8d93] uppercase">{s.label}</div>
         </div>
       ))}
     </div>
@@ -72,12 +52,10 @@ const fmt = (n: number | string) => typeof n === "string" ? n : n.toLocaleString
   {/* Leaflet — self-hosted */}
   <link rel="stylesheet" href="/js/lib/leaflet.css" />
 
-  {/* Leaflet overrides — can't be done with TW */}
+  {/* Leaflet overrides */}
   <style is:global>
     [data-contributor-map] .leaflet-container { font-family: inherit; }
     [data-contributor-map] .leaflet-control-attribution { font-size: 9px; }
-    [data-contributor-map] .leaflet-popup-content-wrapper,
-    [data-contributor-map] .leaflet-popup-tip { border-radius: 0; }
   </style>
 
   <script is:inline src="/js/lib/leaflet.js"></script>

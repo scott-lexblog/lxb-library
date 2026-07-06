@@ -31,8 +31,15 @@ export function shell(title: string, body: string): Response {
   .hdr-sub .active { border-bottom-color: #fff; }
   .hdr-sub .muted { font-weight: 500; color: rgba(255,255,255,0.72); }
 
-  .site-footer { font-size: 13px; color: #6b7280; }
-  .ftr-inner { max-width: 1240px; margin: 0 auto; padding: 24px 32px; }
+  .site-footer { background: #0a0a0b; color: #fff; }
+  .ftr-inner { max-width: 1240px; margin: 0 auto; padding: 34px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .ftr-inner .ftr-logo { display: flex; align-items: baseline; gap: 11px; text-decoration: none; white-space: nowrap; }
+  .ftr-inner .ftr-logo .mark { font-weight: 800; font-size: 27px; letter-spacing: -0.03em; color: #fff; }
+  .ftr-inner .ftr-logo .lib { font-weight: 400; font-size: 20px; letter-spacing: -0.03em; color: rgba(255,255,255,0.58); }
+  .ftr-links { display: flex; gap: 24px; }
+  .ftr-links a { color: #a9abb0; font-size: 13px; text-decoration: none; }
+  .ftr-links a:hover { color: #fff; }
+  .ftr-pub { color: #a9abb0; font-size: 12px; }
 
   ${adminCSS}
 </style>
@@ -58,7 +65,11 @@ export function shell(title: string, body: string): Response {
 </header>
 <main>${body}</main>
 <footer class="site-footer">
-  <div class="ftr-inner">Copyright &copy; 2026, LexBlog, Inc. All Rights Reserved.</div>
+  <div class="ftr-inner">
+    <a href="/" class="ftr-logo"><span class="mark">LexBlog</span><span class="lib">Library</span></a>
+    <nav class="ftr-links"><a href="https://www.lexblog.com/about/">About</a><a href="https://www.lexblog.com/about/#lxb_af-widget_area_title-218">Our Team</a><a href="https://www.lexblog.com/beliefs/">Our Beliefs</a><a href="https://www.lexblog.com/learn-more/">The Field We Built</a><a href="https://www.lexblog.com/contact/">Contact LexBlog</a></nav>
+    <span class="ftr-pub">LexBlog Publishing</span>
+  </div>
 </footer>
 </body>
 </html>`,

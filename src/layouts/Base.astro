@@ -92,9 +92,25 @@ const {
       <slot />
     </main>
 
-    <footer class="text-[13px] text-[#6b7280]">
-      <div class="max-w-[1240px] mx-auto px-5 md:px-8 py-6">
-        Copyright &copy; 2026, LexBlog, Inc. All Rights Reserved.
+    <footer class="bg-[#0a0a0b] text-white">
+      <div class="max-w-[1240px] mx-auto px-5 md:px-8 py-[34px] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        {/* Logo */}
+        <a href="/" class="flex items-baseline gap-[11px] no-underline whitespace-nowrap">
+          <span class="font-[800] text-[27px] tracking-tight text-white leading-none">LexBlog</span>
+          <span class="font-normal text-[20px] tracking-tight text-white/[0.58] leading-none">Library</span>
+        </a>
+
+        {/* Links */}
+        <nav class="flex items-center gap-6 text-[13px]">
+          <a href="https://www.lexblog.com/about/" class="text-[#a9abb0] no-underline hover:text-white transition-colors">About</a>
+          <a href="https://www.lexblog.com/about/#lxb_af-widget_area_title-218" class="text-[#a9abb0] no-underline hover:text-white transition-colors">Our Team</a>
+          <a href="https://www.lexblog.com/beliefs/" class="text-[#a9abb0] no-underline hover:text-white transition-colors">Our Beliefs</a>
+          <a href="https://www.lexblog.com/learn-more/" class="text-[#a9abb0] no-underline hover:text-white transition-colors">The Field We Built</a>
+          <a href="https://www.lexblog.com/contact/" class="text-[#a9abb0] no-underline hover:text-white transition-colors">Contact LexBlog</a>
+        </nav>
+
+        {/* Publishing indicator */}
+        <span class="text-[12px] text-[#a9abb0]">LexBlog Publishing</span>
       </div>
     </footer>
 

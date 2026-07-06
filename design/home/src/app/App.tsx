@@ -96,13 +96,8 @@ const FIELD_ROWS = [
 // ContributorMap
 // ---------------------------------------------------------------------------
 
-type Marker = (typeof MARKERS)[number];
-
 function ContributorMap() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const ptRef = useRef<HTMLElement>(null);
-  const psRef = useRef<HTMLElement>(null);
-  const pbRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -111,11 +106,15 @@ function ContributorMap() {
     if (!mapEl) return;
 
     const map = L.map(mapEl, {
-      center: [18, 0],
-      zoom: 1,
-      minZoom: 1,
-      worldCopyJump: true,
-      scrollWheelZoom: true,
+      center: [20, 10],
+      zoom: 2,
+      zoomControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      touchZoom: false,
       zoomAnimation: false,
     });
 
@@ -124,72 +123,19 @@ function ContributorMap() {
       { attribution: "&copy; OpenStreetMap &copy; CARTO", subdomains: "abcd", maxZoom: 19 }
     ).addTo(map);
 
-    const maxWorks = Math.max(...MARKERS.map((m) => m.total_works));
-    const radius = (works: number) =>
-      5 + (Math.log10(works + 10) / Math.log10(maxWorks + 10)) * 20;
-    const opacity = (works: number) =>
-      Math.max(0.28, Math.min(0.82, 0.26 + (Math.log10(works + 10) / Math.log10(maxWorks + 10)) * 0.56));
+    const radius = (_works: number) => 1;
+    const opacity = (_works: number) => 0.75;
 
-    function placeName(m: Marker) {
-      return [m.city, m.state, m.country].filter(Boolean).join(", ");
-    }
-
-    function renderPanel(m: Marker) {
-      const place = placeName(m) || "Contribution place";
-      if (ptRef.current) ptRef.current.textContent = place;
-      if (psRef.current)
-        psRef.current.textContent =
-          fmt(m.total_works) +
-          " preserved works from " +
-          m.contributors +
-          " contributor" +
-          (m.contributors === 1 ? "" : "s") +
-          " represented here.";
-      if (pbRef.current) {
-        pbRef.current.innerHTML = "";
-        const seen = new Set<string>();
-        m.items.forEach((item) => {
-          if (seen.has(item.organization)) return;
-          seen.add(item.organization);
-          const d = document.createElement("div");
-          d.className = "row";
-          const archive = item.archive_url
-            ? `<a href="${item.archive_url}" target="_blank" rel="noopener">LexBlog archive</a>`
-            : "";
-          const domain = item.domain
-            ? `<a href="https://${item.domain}" target="_blank" rel="noopener">${item.domain}</a>`
-            : "";
-          d.innerHTML =
-            `<div class="f">${item.organization}</div>` +
-            `<div class="m">${fmt(item.works)} works preserved · ${[item.label, domain, archive].filter(Boolean).join(" · ")}</div>`;
-          pbRef.current!.appendChild(d);
-        });
-      }
-    }
 
     MARKERS.forEach((m) => {
-      const marker = L.circleMarker([m.lat, m.lng], {
+      L.circleMarker([m.lat, m.lng], {
         radius: radius(m.total_works),
         color: "#111",
         weight: 1,
         fillColor: "#111",
         fillOpacity: opacity(m.total_works),
+        interactive: false,
       }).addTo(map);
-      const place = placeName(m);
-      marker.bindTooltip(place + " · " + fmt(m.total_works) + " works", { direction: "top" });
-      marker.bindPopup(
-        "<strong>" +
-          place +
-          "</strong><br>" +
-          fmt(m.total_works) +
-          " works represented<br>" +
-          m.contributors +
-          " contributor" +
-          (m.contributors === 1 ? "" : "s") +
-          "<br>Top: " +
-          (m as any).top_org
-      );
-      marker.on("click", () => renderPanel(m));
     });
 
     const t = setTimeout(() => map.invalidateSize(), 60);
@@ -203,36 +149,6 @@ function ContributorMap() {
     <div className="cm-root" ref={rootRef}>
       <div className="cm-shell">
         <div className="cm-map" aria-label="Contribution map" />
-        <div className="cm-metrics" aria-label="Map metrics">
-          <div className="metric">
-            <b>237</b>
-            <span>Contributors Mapped</span>
-          </div>
-          <div className="metric">
-            <b>471,319</b>
-            <span>Works Represented</span>
-          </div>
-          <div className="metric">
-            <b>396</b>
-            <span>Contribution Places</span>
-          </div>
-          <div className="metric">
-            <b>35</b>
-            <span>Countries</span>
-          </div>
-        </div>
-        <aside className="cm-panel" aria-label="Contributor details">
-          <div className="ph">
-            <h2 className="cm-pt" ref={ptRef as React.RefObject<HTMLHeadingElement>}>
-              Contribution Map
-            </h2>
-            <div className="s cm-ps" ref={psRef as React.RefObject<HTMLDivElement>}>
-              Circle size reflects preserved works from matched contributors, not office density.
-            </div>
-          </div>
-          <div className="pb cm-pb" ref={pbRef}>
-          </div>
-        </aside>
       </div>
     </div>
   );
@@ -385,7 +301,7 @@ function LibraryView({ go }: { go: (v: string) => void }) {
               "margin:0;font-size:46px;font-weight:800;letter-spacing:-0.03em;line-height:1;color:#0a0a0b;"
             )}
           >
-            Library
+            The Library at LexBlog
           </h1>
           <div
             style={css(
@@ -408,28 +324,24 @@ function LibraryView({ go }: { go: (v: string) => void }) {
           "margin-top:13px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.55;letter-spacing:0.04em;color:#8a8d93;text-transform:uppercase;"
         )}
       >
-        Each dot represents a region where legal professionals are actively publishing preserved works.
+        Each dot represents a contributing publisher. Placement is illustrative, not a precise location.
       </div>
       <div
         style={css(
-          "margin-top:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#e7e8ea;border:1px solid #e7e8ea;border-radius:4px;overflow:hidden;"
+          "margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#e7e8ea;border:1px solid #e7e8ea;border-radius:4px;overflow:hidden;"
         )}
       >
-        <div style={css("background:#fff;padding:22px 24px;")}>
-          <div style={css("font-size:34px;font-weight:800;letter-spacing:-0.02em;color:#0a0a0b;line-height:1;")}>237</div>
-          <div style={css("margin-top:9px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.07em;color:#8a8d93;text-transform:uppercase;")}>Contributors Mapped</div>
+        <div style={css("background:#fff;padding:24px 28px;")}>
+          <div style={css("font-size:42px;font-weight:800;letter-spacing:-0.02em;color:#0a0a0b;line-height:1;")}>73,000</div>
+          <div style={css("margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.07em;color:#8a8d93;text-transform:uppercase;")}>Contributing Authors</div>
         </div>
-        <div style={css("background:#fff;padding:22px 24px;")}>
-          <div style={css("font-size:34px;font-weight:800;letter-spacing:-0.02em;color:#0a0a0b;line-height:1;")}>471,319</div>
-          <div style={css("margin-top:9px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.07em;color:#8a8d93;text-transform:uppercase;")}>Works Represented</div>
+        <div style={css("background:#fff;padding:24px 28px;")}>
+          <div style={css("font-size:42px;font-weight:800;letter-spacing:-0.02em;color:#0a0a0b;line-height:1;")}>1,100,000</div>
+          <div style={css("margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.07em;color:#8a8d93;text-transform:uppercase;")}>Published Works</div>
         </div>
-        <div style={css("background:#fff;padding:22px 24px;")}>
-          <div style={css("font-size:34px;font-weight:800;letter-spacing:-0.02em;color:#0a0a0b;line-height:1;")}>396</div>
-          <div style={css("margin-top:9px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.07em;color:#8a8d93;text-transform:uppercase;")}>Contribution Places</div>
-        </div>
-        <div style={css("background:#fff;padding:22px 24px;")}>
-          <div style={css("font-size:34px;font-weight:800;letter-spacing:-0.02em;color:#0a0a0b;line-height:1;")}>35</div>
-          <div style={css("margin-top:9px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.07em;color:#8a8d93;text-transform:uppercase;")}>Countries</div>
+        <div style={css("background:#fff;padding:24px 28px;")}>
+          <div style={css("font-size:42px;font-weight:800;letter-spacing:-0.02em;color:#0a0a0b;line-height:1;")}>4,400</div>
+          <div style={css("margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.07em;color:#8a8d93;text-transform:uppercase;")}>Publications</div>
         </div>
       </div>
     </main>
@@ -1042,9 +954,9 @@ export default function App() {
         body { font-family:'Archivo', -apple-system, BlinkMacSystemFont, sans-serif; color:#0a0a0b; -webkit-font-smoothing:antialiased; }
         a { color:inherit; }
 
-        .cm-root { --ink:#111; --muted:#5f5f5f; --rule:#111; --hair:#dedede; height:620px; font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace; color:var(--ink); }
-        .cm-root .cm-shell { width:100%; height:100%; position:relative; display:grid; grid-template-columns:minmax(0,1fr) 240px; }
-        .cm-root .cm-map { min-width:0; height:100%; background:#f4f4f1; }
+        .cm-root { --ink:#111; --muted:#5f5f5f; --rule:#111; --hair:#dedede; height:70vh; min-height:420px; font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace; color:var(--ink); }
+        .cm-root .cm-shell { width:100%; height:100%; position:relative; display:grid; grid-template-columns:1fr; }
+        .cm-root .cm-map { min-width:0; height:100%; background:#ffffff; }
         .cm-root .cm-panel { height:100%; border-left:1px solid var(--rule); background:#fff; display:flex; flex-direction:column; }
         .cm-root .cm-metrics { position:absolute; z-index:500; left:58px; top:14px; display:flex; flex-wrap:wrap; border:1px solid var(--rule); background:rgba(255,255,255,.93); max-width:calc(100% - 324px); }
         .cm-root .metric { padding:8px 10px; border-right:1px solid var(--rule); min-width:86px; }
@@ -1071,13 +983,36 @@ export default function App() {
           .cm-root .cm-metrics { left:58px; max-width:calc(100% - 72px); }
         }
       `}</style>
-      <div style={css("min-height:100%;background:#ffffff;")}>
-        <Header view={view} go={go} />
-        {view === "library" && <LibraryView go={go} />}
-        {view === "about" && <AboutView go={go} />}
-        {view === "submit" && <SubmitView go={go} tab={tab} setTab={setTab} />}
-        {view === "submitted" && <SubmittedView go={go} />}
-        {view === "authorrecord" && <AuthorRecordView go={go} />}
+      <div style={css("min-height:100vh;background:#ffffff;display:flex;flex-direction:column;")}>
+        <div style={css("flex:1;")}>
+          <Header view={view} go={go} />
+          {view === "library" && <LibraryView go={go} />}
+          {view === "about" && <AboutView go={go} />}
+          {view === "submit" && <SubmitView go={go} tab={tab} setTab={setTab} />}
+          {view === "submitted" && <SubmittedView go={go} />}
+          {view === "authorrecord" && <AuthorRecordView go={go} />}
+        </div>
+        <footer style={css("background:#0a0a0b;width:100%;")}>
+          <div style={css("max-width:1320px;margin:0 auto;padding:34px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;")}>
+            <div style={css("display:flex;align-items:baseline;")}>
+              <span style={css("font-weight:800;font-size:27px;letter-spacing:-0.025em;color:#ffffff;line-height:1;")}>LexBlog</span>
+              <span style={css("font-weight:400;font-size:20px;letter-spacing:-0.005em;color:rgba(255,255,255,0.58);line-height:1;margin-left:11px;")}>Library</span>
+            </div>
+            <nav style={css("display:flex;align-items:center;gap:28px;flex-wrap:wrap;")}>
+              {["About LexBlog","The Field We Built","Our Beliefs","Our Team","Contact LexBlog"].map((item) => (
+                <a key={item} href="#" style={css("font-family:'Archivo',sans-serif;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.62);text-decoration:none;white-space:nowrap;")}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.62)")}
+                >
+                  {item}
+                </a>
+              ))}
+            </nav>
+            <p style={css("font-size:12px;color:#a9abb0;white-space:nowrap;")}>
+              LexBlog Publishing
+            </p>
+          </div>
+        </footer>
       </div>
     </>
   );
