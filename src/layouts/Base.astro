@@ -2,6 +2,7 @@
 import SEO from "../components/SEO.astro";
 import { VERSION } from "../lib/version";
 
+
 interface Props {
   title?: string;
   description?: string;
@@ -111,7 +112,7 @@ const {
         </nav>
 
         {/* Publishing indicator */}
-        <span class="text-[12px] text-[#a9abb0]">LexBlog Publishing</span>
+        <span class="text-[12px] text-[#a9abb0]">LexBlog Publishing · v{VERSION}</span>
       </div>
     </footer>
 
