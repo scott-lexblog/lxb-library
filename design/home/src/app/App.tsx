@@ -76,6 +76,14 @@ const ABOUT_SECTIONS = [
   },
   {
     num: "6.",
+    title: "Our Cause",
+    paras: [
+      "To give the public and the profession access to the law and access to justice, built on the insight of legal professionals.",
+      "That insight reaches lawyers, the judiciary, academics, law students, and the public, both directly and through the lawyers who serve them.",
+    ],
+  },
+  {
+    num: "7.",
     title: "Submit Your Publishing",
     cta: true,
     paras: [
@@ -105,23 +113,39 @@ function ContributorMap() {
     const mapEl = root.querySelector<HTMLElement>(".cm-map");
     if (!mapEl) return;
 
+    const isMobile = () => mapEl.offsetWidth < 640;
+    const getZoom = () => (isMobile() ? 1 : 2);
+
     const map = L.map(mapEl, {
       center: [20, 10],
-      zoom: 2,
+      zoom: getZoom(),
       zoomControl: false,
-      dragging: false,
+      dragging: isMobile(),
       scrollWheelZoom: false,
       doubleClickZoom: false,
       boxZoom: false,
       keyboard: false,
       touchZoom: false,
       zoomAnimation: false,
+      maxBounds: [[-85, -180], [85, 180]],
+      maxBoundsViscosity: 1.0,
     });
 
     L.tileLayer(
       "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
       { attribution: "&copy; OpenStreetMap &copy; CARTO", subdomains: "abcd", maxZoom: 19 }
     ).addTo(map);
+
+    const ro = new ResizeObserver(() => {
+      map.invalidateSize();
+      map.setView([20, 10], getZoom(), { animate: false });
+      if (isMobile()) {
+        map.dragging.enable();
+      } else {
+        map.dragging.disable();
+      }
+    });
+    ro.observe(mapEl);
 
     const radius = (_works: number) => 1;
     const opacity = (_works: number) => 0.75;
@@ -141,6 +165,7 @@ function ContributorMap() {
     const t = setTimeout(() => map.invalidateSize(), 60);
     return () => {
       clearTimeout(t);
+      ro.disconnect();
       map.remove();
     };
   }, []);
@@ -178,7 +203,7 @@ function Header({ view, go }: { view: string; go: (v: string) => void }) {
         <a
           onClick={() => go("library")}
           style={css(
-            "display:flex;align-items:baseline;gap:11px;text-decoration:none;white-space:nowrap;cursor:pointer;"
+            "display:flex;align-items:baseline;text-decoration:none;white-space:nowrap;cursor:pointer;"
           )}
         >
           <span
@@ -187,13 +212,6 @@ function Header({ view, go }: { view: string; go: (v: string) => void }) {
             )}
           >
             LexBlog
-          </span>
-          <span
-            style={css(
-              "font-weight:400;font-size:20px;letter-spacing:-0.005em;color:rgba(255,255,255,0.58);line-height:1;"
-            )}
-          >
-            Library
           </span>
         </a>
         <div
@@ -210,7 +228,7 @@ function Header({ view, go }: { view: string; go: (v: string) => void }) {
                 view === "about" ? "#fff" : "rgba(255,255,255,0.82)")
             }
           >
-            About
+            About LexBlog
           </a>
           <a
             onClick={() => go("submit")}
@@ -955,6 +973,7 @@ export default function App() {
         a { color:inherit; }
 
         .cm-root { --ink:#111; --muted:#5f5f5f; --rule:#111; --hair:#dedede; height:70vh; min-height:420px; font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace; color:var(--ink); }
+        @media (max-width:639px) { .cm-root { height:300px; min-height:300px; } }
         .cm-root .cm-shell { width:100%; height:100%; position:relative; display:grid; grid-template-columns:1fr; }
         .cm-root .cm-map { min-width:0; height:100%; background:#ffffff; }
         .cm-root .cm-panel { height:100%; border-left:1px solid var(--rule); background:#fff; display:flex; flex-direction:column; }
@@ -977,10 +996,8 @@ export default function App() {
         .cm-root .leaflet-control-attribution { font-size:9px; }
         .cm-root .leaflet-popup-content-wrapper, .cm-root .leaflet-popup-tip { border-radius:0; }
         @media (max-width:760px) {
-          .cm-root .cm-shell { grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) 210px; }
-          .cm-root .cm-map { height:auto; }
-          .cm-root .cm-panel { height:210px; border-left:0; border-top:1px solid var(--rule); }
-          .cm-root .cm-metrics { left:58px; max-width:calc(100% - 72px); }
+          .cm-root .cm-shell { grid-template-columns:1fr; grid-template-rows:1fr; }
+          .cm-root .cm-map { height:100%; }
         }
       `}</style>
       <div style={css("min-height:100vh;background:#ffffff;display:flex;flex-direction:column;")}>
@@ -991,12 +1008,19 @@ export default function App() {
           {view === "submit" && <SubmitView go={go} tab={tab} setTab={setTab} />}
           {view === "submitted" && <SubmittedView go={go} />}
           {view === "authorrecord" && <AuthorRecordView go={go} />}
+          {!["library","about","submit","submitted","authorrecord"].includes(view) && (
+            <main style={css("max-width:760px;margin:0 auto;padding:80px 32px 96px;")}>
+              <p style={css("font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;color:#8a8d93;text-transform:uppercase;margin-bottom:20px;")}>404</p>
+              <h1 style={css("margin:0;font-size:46px;font-weight:800;letter-spacing:-0.03em;color:#0a0a0b;")}>Page not found</h1>
+              <p style={css("margin-top:20px;font-size:18px;line-height:1.6;color:#54585f;")}>The page you're looking for doesn't exist.</p>
+              <a onClick={() => go("library")} style={css("margin-top:32px;display:inline-flex;align-items:center;background:#0a0a0b;color:#fff;font-size:15px;font-weight:600;padding:14px 26px;border-radius:4px;cursor:pointer;text-decoration:none;")}>Back to the Library</a>
+            </main>
+          )}
         </div>
         <footer style={css("background:#0a0a0b;width:100%;")}>
           <div style={css("max-width:1320px;margin:0 auto;padding:34px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;")}>
             <div style={css("display:flex;align-items:baseline;")}>
               <span style={css("font-weight:800;font-size:27px;letter-spacing:-0.025em;color:#ffffff;line-height:1;")}>LexBlog</span>
-              <span style={css("font-weight:400;font-size:20px;letter-spacing:-0.005em;color:rgba(255,255,255,0.58);line-height:1;margin-left:11px;")}>Library</span>
             </div>
             <nav style={css("display:flex;align-items:center;gap:28px;flex-wrap:wrap;")}>
               {["About LexBlog","The Field We Built","Our Beliefs","Our Team","Contact LexBlog"].map((item) => (

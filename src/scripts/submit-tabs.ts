@@ -16,6 +16,7 @@ function initSubmitTabs() {
       btn.classList.toggle('text-[#8a8d93]', !isActive);
       btn.classList.toggle('font-medium', !isActive);
       btn.classList.toggle('border-transparent', !isActive);
+      btn.setAttribute('aria-selected', String(isActive));
     });
 
     panels.forEach(panel => {

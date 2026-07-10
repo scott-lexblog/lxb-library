@@ -44,13 +44,19 @@ const categories = [
     </p>
 
     {/* Tabs */}
-    <div data-submit-tabs class="mt-[38px] flex gap-[30px] border-b border-[#e7e8ea]">
+    <div data-submit-tabs class="mt-[38px] flex gap-[30px] border-b border-[#e7e8ea]" role="tablist">
       <button
         data-tab-trigger="single"
+        role="tab"
+        aria-selected="true"
+        aria-controls="panel-single"
         class="submit-tab bg-transparent border-0 font-sans text-[17px] tracking-[-0.01em] pb-4 -mb-px cursor-pointer text-[#0a0a0b] font-bold border-b-2 border-[#0a0a0b]"
       >A Single Published Work</button>
       <button
         data-tab-trigger="feed"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-feed"
         class="submit-tab bg-transparent border-0 font-sans text-[17px] tracking-[-0.01em] pb-4 -mb-px cursor-pointer text-[#8a8d93] font-medium border-b-2 border-transparent"
       >RSS Feed</button>
     </div>
@@ -61,51 +67,51 @@ const categories = [
       {/* Name */}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">First Name <span class="text-[#c0392b]">*</span></label>
-          <input type="text" name="first_name" required class="submit-input" />
+          <label for="first_name" class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">First Name <span class="text-[#c0392b]">*</span></label>
+          <input type="text" name="first_name" id="first_name" required class="submit-input" />
         </div>
         <div>
-          <label class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Last Name <span class="text-[#c0392b]">*</span></label>
-          <input type="text" name="last_name" required class="submit-input" />
+          <label for="last_name" class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Last Name <span class="text-[#c0392b]">*</span></label>
+          <input type="text" name="last_name" id="last_name" required class="submit-input" />
         </div>
       </div>
 
       {/* Email */}
       <div>
-        <label class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Email <span class="text-[#c0392b]">*</span></label>
-        <input type="email" name="email" required class="submit-input" />
+        <label for="email" class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Email <span class="text-[#c0392b]">*</span></label>
+        <input type="email" name="email" id="email" required class="submit-input" />
       </div>
 
       {/* Firm */}
       <div>
-        <label class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Firm / Company Name <span class="text-[#c0392b]">*</span></label>
-        <input type="text" name="firm" required class="submit-input" />
+        <label for="firm" class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Firm / Company Name <span class="text-[#c0392b]">*</span></label>
+        <input type="text" name="firm" id="firm" required class="submit-input" />
       </div>
 
       {/* Single post fields */}
-      <div data-tab-panel="single" class="contents">
+      <div data-tab-panel="single" id="panel-single" role="tabpanel" class="contents">
         <div>
-          <label class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Post Title <span class="text-[#c0392b]">*</span></label>
-          <input type="text" name="post_title" class="submit-input" />
+          <label for="post_title" class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Post Title <span class="text-[#c0392b]">*</span></label>
+          <input type="text" name="post_title" id="post_title" class="submit-input" />
         </div>
         <div>
-          <label class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Post Content <span class="text-[#c0392b]">*</span></label>
-          <textarea name="post_content" rows={8} class="submit-textarea"></textarea>
+          <label for="post_content" class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Post Content <span class="text-[#c0392b]">*</span></label>
+          <textarea name="post_content" id="post_content" rows={8} class="submit-textarea"></textarea>
         </div>
       </div>
 
       {/* Feed fields */}
-      <div data-tab-panel="feed" class="contents hidden">
+      <div data-tab-panel="feed" id="panel-feed" role="tabpanel" class="contents hidden">
         <div>
-          <label class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">RSS Feed URL <span class="text-[#c0392b]">*</span></label>
-          <input type="url" name="feed_url" placeholder="https://..." class="submit-input" />
+          <label for="feed_url" class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">RSS Feed URL <span class="text-[#c0392b]">*</span></label>
+          <input type="url" name="feed_url" id="feed_url" placeholder="https://..." class="submit-input" />
         </div>
       </div>
 
       {/* Description */}
       <div>
-        <label class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Submission Description</label>
-        <textarea name="description" rows={4} class="submit-textarea"></textarea>
+        <label for="description" class="block text-[14px] font-semibold text-[#16181c] mb-[9px]">Submission Description</label>
+        <textarea name="description" id="description" rows={4} class="submit-textarea"></textarea>
       </div>
 
       {/* Categories */}

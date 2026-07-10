@@ -15,11 +15,13 @@ function initContributorMap() {
   const mapEl = el('map-canvas', root);
   if (!mapEl) return;
 
+  const isMobile = window.innerWidth < 768;
+
   const map = L.map(mapEl, {
     center: [20, 10],
     zoom: 2,
     zoomControl: false,
-    dragging: false,
+    dragging: isMobile,
     scrollWheelZoom: false,
     doubleClickZoom: false,
     boxZoom: false,
