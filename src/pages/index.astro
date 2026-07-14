@@ -30,7 +30,13 @@ const stats = [
     {/* Map card */}
     <div class="mt-[34px] border border-[#e7e8ea] rounded-[4px] bg-[#f7f6f2] overflow-hidden">
       {/* Static image on mobile */}
-      <img src={`/map-mobile.png?v=${VERSION}`} alt="Contribution map" class="block md:hidden w-full h-auto" />
+      <img
+        src={`/map-mobile-768.webp?v=${VERSION}`}
+        srcset={`/map-mobile-768.webp?v=${VERSION} 768w, /map-mobile.webp?v=${VERSION} 2088w`}
+        sizes="100vw"
+        alt="Contribution map"
+        class="block md:hidden w-full h-auto"
+      />
       {/* Interactive Leaflet on desktop */}
       <div data-contributor-map data-version={VERSION} class="hidden md:block h-[480px]">
         <div data-map-canvas class="w-full h-full bg-[#f4f4f1]" aria-label="Contribution map"></div>
