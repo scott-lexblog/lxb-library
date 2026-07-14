@@ -15,13 +15,11 @@ function initContributorMap() {
   const mapEl = el('map-canvas', root);
   if (!mapEl) return;
 
-  const isMobile = window.innerWidth < 768;
-
   const map = L.map(mapEl, {
     center: [20, 10],
     zoom: 2,
     zoomControl: false,
-    dragging: isMobile,
+    dragging: false,
     scrollWheelZoom: false,
     doubleClickZoom: false,
     boxZoom: false,
@@ -31,10 +29,12 @@ function initContributorMap() {
   });
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    attribution: '',
     subdomains: 'abcd',
     maxZoom: 19,
   }).addTo(map);
+
+  map.attributionControl.remove();
 
   const version = root.dataset.version || '';
   fetch(`/markers.json?v=${version}`)

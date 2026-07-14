@@ -29,14 +29,17 @@ const stats = [
 
     {/* Map card */}
     <div class="mt-[34px] border border-[#e7e8ea] rounded-[4px] bg-[#f7f6f2] overflow-hidden">
-      <div data-contributor-map data-version={VERSION} class="h-[320px] md:h-[480px]">
+      {/* Static image on mobile */}
+      <img src={`/map-mobile.png?v=${VERSION}`} alt="Contribution map" class="block md:hidden w-full h-auto" />
+      {/* Interactive Leaflet on desktop */}
+      <div data-contributor-map data-version={VERSION} class="hidden md:block h-[480px]">
         <div data-map-canvas class="w-full h-full bg-[#f4f4f1]" aria-label="Contribution map"></div>
       </div>
     </div>
 
     {/* Caption */}
     <div class="mt-[13px] font-mono text-[12.5px] leading-[1.55] tracking-[0.04em] text-[#8a8d93] uppercase">
-      Each dot represents a contributing publisher. Placement is illustrative, not a precise location.
+      Each dot represents a contributing publisher. Placement is illustrative, not a precise location. Map data &copy; <a href="https://www.openstreetmap.org/copyright" class="text-[#8a8d93] underline">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" class="text-[#8a8d93] underline">CARTO</a>.
     </div>
 
     {/* Stats grid */}
